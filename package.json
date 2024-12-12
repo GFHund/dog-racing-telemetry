@@ -1,0 +1,33 @@
+{
+  "name": "dog-racing-telemetry",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-dialog": "^2.0.1",
+    "@tauri-apps/plugin-shell": "^2.0.1",
+    "@tauri-apps/plugin-sql": "^2.0.0",
+    "@tauri-apps/plugin-websocket": "^2.0.0",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "chart.js": "^4.4.5",
+    "pinia": "^2.2.4",
+    "vue": "^3.3.4",
+    "vue-router": "^4.4.5"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "sass-embedded": "^1.80.3",
+    "typescript": "^5.2.2",
+    "vite": "^5.3.1",
+    "vue-tsc": "^2.0.22"
+  }
+}
