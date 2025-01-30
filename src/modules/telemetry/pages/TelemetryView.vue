@@ -3,7 +3,10 @@
     import { telemetryStore } from '../store/telemetryStore';
     import TelemetryFileEntry from '../components/TelemetryFileEntry.vue';
     import SelectComponent from '../components/SelectComponent.vue';
+import { useRoute, useRouter } from 'vue-router';
+
     const store = telemetryStore();
+    const router = useRouter();
 
     async function openFile(){
         const file = await open({
@@ -18,17 +21,22 @@
             store.addOpenFile(file);
         }
     }
+
+    function changeView(value:string){
+        console.log(value);
+        router.push({name:value});
+    }
 </script>
 
 <template>
     <div class="row">
         <div class="col">
             <div class="laps-header">
-                <a class="laps-open-file" @click="openFile">
-                    <svg class="bi" width="32" height="32" fill="currentColor">
+                <div class="laps-open-file" @click="openFile">
+                    <svg class="bi" width="20" height="20" fill="currentColor">
                         <use xlink:href="~/bootstrap-icons/bootstrap-icons.svg#file-earmark-plus"/>
                     </svg>
-                </a>
+                </div>
             </div>
             <div class="file-list">
                 <div v-for="file in store.openFiles" :key="file.filePath">
@@ -38,12 +46,14 @@
         </div>
         <div class="col">
             <div class="chart-view-header">
+                
                 <select-component 
                     :default="{label:'Single Diagram',value:'single-chart'}"
                     :options="[
                         {label:'Single Diagram',value:'single-chart'},
                         {label:'Multi Diagram',value:'multi-chart'},
-                ]"></select-component>
+                ]" @change="changeView"></select-component>
+                <!--
                 <select-component
                     :default="{label:'Throttle',value:'throttle'}"
                     :options="[
@@ -52,7 +62,9 @@
                         {label:'Steering',value:'steering'},
                     ]"
                 ></select-component>
+                -->
             </div>
+            
             <RouterView />
         </div>
     </div>
@@ -62,6 +74,7 @@
     background-color:var(--primary-btn-color);
 }
 .laps-open-file{
+    padding:5px 10px;
     svg{
         color:var(--bs-white);
     }

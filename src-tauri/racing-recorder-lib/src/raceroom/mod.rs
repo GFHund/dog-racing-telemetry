@@ -19,7 +19,7 @@ impl Recorder for RaceRoom{
         unsafe{
             let data = rr_data(self.handle);
             TelemetryData{
-                speed: data.speed,
+                speed: data.speed * 3.6,
                 steering: data.steerAngle,
                 throttle: data.gas,
                 brake: data.brake,

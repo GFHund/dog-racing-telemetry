@@ -27,9 +27,8 @@
             //let result = await Command.sidecar("ws-server").spawn();
             let result = await Command.create("ws-server").spawn();
             //= await Command.create("ws-server").execute();
-            console.log(result);
             wsServer = result;
-            const now = Date.now();
+            const now = new Date();
             let day = now.getDate();
             let month = now.getMonth();
             let year = now.getFullYear();
@@ -38,14 +37,9 @@
             let filename = ''+year+'_'+month+'_'+day+'_'+hour+'_'+minute+'.sqlite';
             db = await Database.load('sqlite:'+filename);
             await db.execute('CREATE TABLE IF NOT EXISTS raw_data('+
-            'id INTEGER PRIMARY KEY AUTOINCREMENT,'+
-            'lap INTEGER,'+
-            'speed REAL,'+
-            'gas REAL,'+
-            'throttle REAL,'+
-            'break REAL,'+
-            'steering REAL,'+
-            'current_time INTEGER'+
+            'id INTEGER PRIMARY KEY,'+
+            'data TEXT,'+
+            'CONSTRAINT data_json CHECK(json_valid(data))'+
             ');');
 
             ws = await WebSocket.connect('ws://127.0.0.1:9002');
@@ -59,8 +53,8 @@
                     throttle.value = o.throttle;
                     brake.value = o.brake;
                     steering.value = o.steering;
-                    db?.execute('INSERT INTO raw_data(lap,speed,throttle,break,steering,current_time) VALUES($1,$2,$3,$5,$6)',
-                        [o.lap,o.speed,o.throttle,o.break,o.steering,o.current_time]
+                    db?.execute('INSERT INTO raw_data(data) VALUES($1)',
+                        [msg.data]
                     ).then(()=>{});
                 }
             });

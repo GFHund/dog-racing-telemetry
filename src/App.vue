@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { getCurrentWindow  } from '@tauri-apps/api/window';
 
+async function minimize(){
+  await getCurrentWindow().minimize();
+}
+
+async function maximize(){
+  await getCurrentWindow().maximize();
+}
+
 async function close(){
   await getCurrentWindow().close();
 }
@@ -15,14 +23,14 @@ async function close(){
     <div data-tauri-drag-region class="drag-region"></div>
     <div class="controls">
       <div>
-        <a class="btn btn-primary">
+        <a class="btn btn-primary" @click="minimize">
           <svg class="bi" width="32" height="32" fill="currentColor">
             <use xlink:href="~/bootstrap-icons/bootstrap-icons.svg#dash"/>
           </svg>
         </a>
       </div>
       <div>
-        <a class="btn btn-primary">
+        <a class="btn btn-primary" @click="maximize">
           <svg class="bi" width="32" height="32" fill="currentColor">
             <use xlink:href="~/bootstrap-icons/bootstrap-icons.svg#plus"/>
           </svg>
@@ -37,7 +45,7 @@ async function close(){
       </div>
     </div>
   </header>
-  <main class="container">
+  <main class="container-fluid">
     <RouterView />
   </main>
 </template>
@@ -79,4 +87,7 @@ header{
   --primary-btn-color:#222;
 }
 
+body{
+  color:white;
+}
 </style>

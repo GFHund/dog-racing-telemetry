@@ -10,6 +10,10 @@ export const routes:RouteRecordRaw[] = [
         component: TelemetryView,
         children:[
             {
+                path:'',
+                redirect:'single-chart'
+            },
+            {
                 path: 'single-chart',
                 name: 'single-chart',
                 component: TelemetrySingleChartView

@@ -11,8 +11,11 @@
     "core:window:default",
     "core:window:allow-start-dragging",
     "core:window:allow-close",
+    "core:window:allow-maximize",
+    "core:window:allow-minimize",
     "dialog:default",
     "sql:default",
+    "sql:allow-execute",
     "shell:default",
     {
       "identifier":"shell:allow-spawn",

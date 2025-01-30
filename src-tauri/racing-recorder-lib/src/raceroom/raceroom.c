@@ -54,7 +54,7 @@ struct RrHandle rr_init(){
 }
 struct RrTelemetryObj rr_data(struct RrHandle handle){
     struct RrTelemetryObj ret;
-    ret.speed = handle.map_buffer->car_speed * 3.6;
+    ret.speed = handle.map_buffer->car_speed ;
     ret.gas = handle.map_buffer->throttle_raw;
     ret.brake = handle.map_buffer->brake_raw;
     ret.steerAngle = handle.map_buffer->steer_input_raw;

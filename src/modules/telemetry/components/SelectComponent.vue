@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref,defineEmits, defineProps, useTemplateRef} from 'vue';
 import { SelectedObject } from '../model/SelectedObjects';
 
     const props = defineProps({
@@ -17,11 +17,34 @@ import { SelectedObject } from '../model/SelectedObjects';
             required:false
         }
     });
+    const events = defineEmits(['change']);
+    const radioInputs = useTemplateRef('input_radio');
+    const checkboxInputs = useTemplateRef('input_checkbox');
     //const selected = defineModel<SelectedObject>();
-    let selected = ref(props.default);
+    let selected = ref({...props.default});
     let hideWindow = ref(true);
-    function onChanged(){
-
+    function onChanged(ev:Event){
+        const target:HTMLInputElement = ev.target;
+        if(target.type === 'radio'){
+            for(let rad of radioInputs.value){
+                if(rad.checked){
+                    events('change',rad.value);
+                    selected.value.label = rad.parentElement.innerText;
+                    selected.value.value = rad.value;
+                    break;
+                }
+            }
+            
+        } else {
+            let selectedItems = [];
+            for(let rad of checkboxInputs.value){
+                if(rad.checked){
+                    selectedItems.push(rad.value);
+                }
+            }
+            events('change',selectedItems);
+        }
+        hideWindow.value = true;
     }
     function toggleWindow(){
         hideWindow.value = !hideWindow.value;
@@ -34,12 +57,12 @@ import { SelectedObject } from '../model/SelectedObjects';
         <div class="select-window" :class="{'d-none':hideWindow}">
             <template v-if="props.multi">
                 <label v-for="option in props.options" :key="option.value">
-                    <input type="checkbox" :value="option.value" @change="onChanged"> {{ option.label }}
+                    <input type="checkbox" name="select-check" :value="option.value" @change="onChanged" ref="input_checkbox"> {{ option.label }}
                 </label>
             </template>
             <template v-else>
                 <label v-for="option in props.options" :key="option.value">
-                    <input type="radio" :value="option.value" @change="onChanged"> {{ option.label }}
+                    <input type="radio" name="select-radio" :value="option.value" @change="onChanged" ref="input_radio"> {{ option.label }}
                 </label>
             </template>
         </div>
@@ -52,8 +75,12 @@ import { SelectedObject } from '../model/SelectedObjects';
     }
     .select-window{
         position:absolute;
+        z-index:50;
         top:100%;
         left:0;
+        width:100%;
+        color:white;
+        background-color:var(--bs-blue);
         label{
             display:block;
         }

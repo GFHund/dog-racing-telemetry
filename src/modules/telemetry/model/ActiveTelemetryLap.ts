@@ -1,3 +1,3 @@
 export class ActiveTelemetryLap{
-    constructor(public file:string,public lap:number){}
+    public constructor(public file:string,public lap:number,public keys:string[]){}
 }
